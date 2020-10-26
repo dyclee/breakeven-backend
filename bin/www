@@ -8,6 +8,9 @@ var app = require('../app');
 var debug = require('debug')('backend-express:server');
 var http = require('http');
 
+//getting .env variables
+require('dotenv').config();
+
 /**
  * Get port from environment and store in Express.
  */
@@ -25,7 +28,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port, () => console.log(`Listening on port ${port}...`));
 server.on('error', onError);
 server.on('listening', onListening);
 
