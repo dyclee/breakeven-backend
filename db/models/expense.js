@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false,
     },
-    category: {
-      type: DataTypes.STRING(100),
+    categoryId: {
+      type: DataTypes.INTEGER,
     },
     createdBy: {
       type: DataTypes.INTEGER,
@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Expense.associate = function(models) {
     // associations can be defined here
+    Expense.belongsTo(models.Category, { foreignKey: 'categoryId'});
+    Expense.belongsTo(models.User, { foreignKey: 'createdBy'})
+
+    Expense.hasMany(models.userExpense, { foreignKey: 'expenseId'});
   };
   return Expense;
 };

@@ -20,12 +20,14 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },
-      category: {
-        type: Sequelize.STRING(100)
+      categoryId: {
+        type: Sequelize.INTEGER,
+        references: { model: 'Categories'},
       },
       createdBy: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: { model: 'Users'},
       },
       createdAt: {
         allowNull: false,

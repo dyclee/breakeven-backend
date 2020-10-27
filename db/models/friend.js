@@ -1,11 +1,11 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Friend = sequelize.define('Friend', {
-    userId_1: {
+    friendOne: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    userId_2: {
+    friendTwo: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
