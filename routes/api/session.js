@@ -9,7 +9,7 @@ const {User} = require('../../db/models')
 
 const router = express.Router();
 
-router.put('/', loginValidator, asyncHandler( async (req, res, next) => {
+router.put('/', loginValidator, handleValidationErrors, asyncHandler( async (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -30,4 +30,12 @@ router.put('/', loginValidator, asyncHandler( async (req, res, next) => {
     user.tokenId = jti;
     await user.save();
     res.json({ token, user})
+}));
+
+router.delete('/', [authenticated], asyncHandler( async (req, res) => {
+    req.user.tokenId = null;
+    await req.user.save();
+    res.json({messsage: 'success'});
 }))
+
+module.exports = router;
