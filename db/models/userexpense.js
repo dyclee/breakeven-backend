@@ -1,10 +1,23 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const UserExpense = sequelize.define('UserExpense', {
-    userId: DataTypes.INTEGER,
-    expenseId: DataTypes.INTEGER,
-    amount: DataTypes.FLOAT,
-    paidStatus: DataTypes.BOOLEAN
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    expenseId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    amount: {
+        type: DataTypes.FLOAT(8,2),
+        allowNull: false,
+      },
+    paidStatus: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   }, {});
   UserExpense.associate = function(models) {
     // associations can be defined here
