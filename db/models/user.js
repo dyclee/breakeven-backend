@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING.BINARY,
       allowNull: false,
     },
+    tokenId: {
+      type: DataTypes.STRING,
+    }
   }, {});
   User.associate = function(models) {
     // associations can be defined here

@@ -27,9 +27,7 @@ router.put('/', loginValidator, asyncHandler( async (req, res, next) => {
     }
 
     const { jti, token } = getUserToken(user);
-
+    user.tokenId = jti;
+    await user.save();
+    res.json({ token, user})
 }))
-
-Player.prototype.isValidPassword = function (password) {
-    return bcrypt.compareSync(password, this.hashedPassword.toString());
-  }
