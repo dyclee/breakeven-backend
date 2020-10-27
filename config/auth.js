@@ -21,6 +21,8 @@ const getUserToken = user => {
         secret,
         { expiresIn: Number.parseInt(expiresIn), jwtid }
     );
+
+    user.tokenId = jwtid;
     return {
         token,
         jti: jwtid,

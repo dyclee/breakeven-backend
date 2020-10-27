@@ -1,6 +1,6 @@
 const {validationResult, check } = require('express-validator');
 
-const signUpValidator = [
+const signupValidator = [
     check("fullName")
         .exists({ checkFalsy: true })
         .withMessage("Please provide your name")
@@ -57,7 +57,7 @@ const handleValidationErrors = (req, res, next) => {
 }
 
 module.exports = {
-    signUpValidator,
+    signupValidator,
     loginValidator,
     handleValidationErrors,
 }
