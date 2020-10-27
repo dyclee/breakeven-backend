@@ -8,13 +8,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      friendOne: {
+      friender: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: { model: "Users" },
       },
-      friendTwo: {
+      friended: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: { model: "Users" },
       },
       pending: {
         type: Sequelize.BOOLEAN,

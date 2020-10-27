@@ -19,6 +19,13 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     User.hasMany(models.Expense, { foreignKey: 'createdBy' });
     User.hasMany(models.UserExpense, { foreignKey: 'userId' });
+
+    User.belongsToMany(models.User, {
+      as: "friends",
+      through: "Friend",
+      otherKey: "friender",
+      foreignKey: "friended",
+    });
   };
   return User;
 };

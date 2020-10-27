@@ -11,10 +11,12 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: { model: "Users"},
       },
       expenseId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: { model: "Expenses"},
       },
       amount: {
         type: Sequelize.FLOAT(8,2),
