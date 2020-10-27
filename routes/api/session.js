@@ -27,6 +27,7 @@ router.put('/', loginValidator, asyncHandler( async (req, res, next) => {
     }
 
     const { jti, token } = getUserToken(user);
+
 }))
 
 Player.prototype.isValidPassword = function (password) {
