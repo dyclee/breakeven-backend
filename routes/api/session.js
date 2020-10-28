@@ -5,7 +5,8 @@ const {asyncHandler} = require('../../utils');
 const {check, validationResult} = require('express-validator');
 const {handleValidationErrors, loginValidator, signupValidator } = require('../../validations');
 const {authenticated, getUserToken } = require('../../config/auth');
-const {User} = require('../../db/models')
+const {User} = require('../../db/models');
+const { route } = require('./users');
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ router.post('/signup', signupValidator, handleValidationErrors, asyncHandler( as
     })
 
 }))
-router.post('/login', loginValidator, handleValidationErrors, asyncHandler( async (req, res, next) => {
+router.post('/', loginValidator, handleValidationErrors, asyncHandler( async (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -58,5 +59,6 @@ router.delete('/logout', [authenticated], asyncHandler( async (req, res) => {
     await req.user.save();
     res.json({message: 'success'});
 }))
+
 
 module.exports = router;
