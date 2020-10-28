@@ -11,6 +11,7 @@ const router = express.Router();
 
 router.post('/signup', signupValidator, handleValidationErrors, asyncHandler( async (req, res, next) => {
     const { fullName, email, password } = req.body;
+    console.log(email);
     const hashedPassword = await bcrypt.hash(password, 9);
     const user = await User.create({
         fullName,
@@ -20,7 +21,7 @@ router.post('/signup', signupValidator, handleValidationErrors, asyncHandler( as
     const tokenObj = getUserToken(user);
     const { token } = tokenObj;
 
-    localStorage.setItem("token", token);
+    // localStorage.setItem("token", token);
     res.status(201).json({
         user,
         tokenObj,
@@ -45,15 +46,17 @@ router.post('/login', loginValidator, handleValidationErrors, asyncHandler( asyn
     }
 
     const { jti, token } = getUserToken(user);
+    // localStorage.setItem("token", token);
     user.tokenId = jti;
     await user.save();
     res.json({ token, user})
 }));
 
-router.delete('/', [authenticated], asyncHandler( async (req, res) => {
+router.delete('/logout', [authenticated], asyncHandler( async (req, res) => {
+    localStorage.clear();
     req.user.tokenId = null;
     await req.user.save();
-    res.json({messsage: 'success'});
+    res.json({message: 'success'});
 }))
 
 module.exports = router;

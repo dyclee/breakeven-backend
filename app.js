@@ -18,8 +18,8 @@ const app = express();
 app.use(cors({ origin: 'http://localhost:8080' }));
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/session', sessionApiRouter);
@@ -32,14 +32,15 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
+app.use(function(err, _req, res, _next) {
   res.status(err.status || 500);
-  res.render('error');
+  if (err.status === 401) {
+    res.set('WWW-Authenticate', 'Bearer');
+  }
+  res.json({
+    message: err.message,
+    error: JSON.parse(JSON.stringify(err)),
+  });
 });
 
 module.exports = app;
