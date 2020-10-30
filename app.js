@@ -9,6 +9,7 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersApiRouter = require('./routes/api/users');
 const sessionApiRouter = require('./routes/api/session');
+const expensesApiRouter = require('./routes/api/expenses');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cors({origin: "http://localhost:3000"}));
 // app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/api/expenses', expensesApiRouter);
 app.use('/api/session', sessionApiRouter);
 app.use('/api/users', usersApiRouter);
 app.use('/', indexRouter);
