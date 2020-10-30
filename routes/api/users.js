@@ -13,7 +13,6 @@ const router = express.Router();
 router.put('/', asyncHandler( async (req, res, next) => {
     const thing = await (checkUser(req))
     const { tokenId, user} = thing;
-    console.log("what", user.fullName, tokenId)
     res.status(201).json({
         tokenId, user
     })
