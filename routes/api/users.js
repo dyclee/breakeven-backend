@@ -4,7 +4,6 @@ const { User, Friend } = require('../../db/models')
 const { checkUser } = require('../../config/auth')
 
 const express = require('express');
-const user = require('../../db/models/user');
 const router = express.Router();
 
 /* GET users listing. */
@@ -17,6 +16,28 @@ router.put('/', asyncHandler( async (req, res, next) => {
     res.status(201).json({
         tokenId, user
     })
+}));
+
+router.post('/friends', asyncHandler (async (req, res, next) => {
+    const { email, user } = req.body;
+    const potentialFriend = await User.findOne({
+        where: {
+            email
+        }
+    });
+    if (!potentialFriend) {
+        const err = new Error("No account associated with email input")
+        err.status = 400;
+        err.title = "User not found";
+        return err;
+    }
+    const friendRequest = await Friend.create({
+        friender: user.id,
+        friended: potentialFriend.id,
+        pending: true,
+    });
+
+    res.status(201).json({ friendRequest })
 }))
 
 router.get('/friends', asyncHandler (async (req, res, next) => {
