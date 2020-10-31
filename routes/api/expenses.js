@@ -32,6 +32,7 @@ router.post('/', asyncHandler (async (req, res, next) => {
     }
 
     const amountSplit = totalAmount / members.length;
+
 }))
 
 module.exports = router;

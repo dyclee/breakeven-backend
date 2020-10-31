@@ -19,6 +19,7 @@ router.put('/', asyncHandler( async (req, res, next) => {
 }));
 
 router.post('/friends', asyncHandler (async (req, res, next) => {
+    console.log(req.body);
     const { email, user } = req.body;
     const potentialFriend = await User.findOne({
         where: {
