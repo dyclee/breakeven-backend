@@ -1,7 +1,8 @@
 const { loginValidator, handleValidationErrors } = require('../../validations');
 const { asyncHandler } = require('../../utils');
 const { User, Friend } = require('../../db/models')
-const { checkUser } = require('../../config/auth')
+const { checkUser } = require('../../config/auth');
+const { Op } = require('sequelize');
 
 const express = require('express');
 const router = express.Router();
@@ -41,22 +42,27 @@ router.post('/friends', asyncHandler (async (req, res, next) => {
     res.status(201).json({ friendRequest })
 }))
 
-router.get('/friends', asyncHandler (async (req, res, next) => {
+router.put('/friends', asyncHandler (async (req, res, next) => {
     const { user } = req.body;
     const friendedArray = await Friend.findAll({
         where: {
-            friended: user.id,
-            pending: false
+            friended: {
+                [Op.eq]: user.id
+            },
+            pending: {
+                [Op.eq]: false
+            }
         },
-        include: [User],
+        include: User,
     });
+    console.log("friendedArray: ", friendedArray);
     const friendedUserObjs = friendedArray.map((friend) => friend.User.id)
     const frienderArray = await Friend.findAll({
         where: {
             friender: user.id,
             pending: false
         },
-        include: [User]
+        include: User,
     });
     const frienderUserObjs = frienderArray.map((friend) => friend.user.id);
 
