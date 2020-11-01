@@ -20,6 +20,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },
+      members: {
+        type: Sequelize.ARRAY(Sequelize.INTEGER),
+        allowNull: false,
+      },
       categoryId: {
         type: Sequelize.INTEGER,
         references: { model: 'Categories'},
