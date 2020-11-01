@@ -30,7 +30,7 @@ router.post('/', asyncHandler (async (req, res, next) => {
         categoryId,
         requirements,
     });
-    // console.log(newTotalExpense);
+
     if (members.length === 1) {
         const userExpense = await UserExpense.create({
             userId: members[0],
@@ -41,7 +41,7 @@ router.post('/', asyncHandler (async (req, res, next) => {
         res.status(201).json({ userExpense });
     } else if (!requirements) {
         const splitEvenly = Math.round(totalAmount * 100.0 / members.length) / 100
-        // console.log("SPLIT EVENLY:  ", splitEvenly)
+
         const createUserExpenses = async () => {
             return Promise.all(members.forEach(async(member) => {
                 return await UserExpense.create({
@@ -60,39 +60,39 @@ router.post('/', asyncHandler (async (req, res, next) => {
             });
     } else {
         const parsedRequirements = JSON.parse(requirements);
+
         let remainingMembers = members;
         let remainingTotal = totalAmount;
+        let requiredExpenses = [];
+        let remainingExpenses = [];
         try {
-            const createRequiredExpenses = async () => {
-                return Promise.all(parsedRequirements.forEach(async(requirement) => {
-                    let memberIndex = remainingMembers.indexOf(requirement[0]);
-                    remainingMembers.splice(memberIndex, 1);
+            for (let userId in parsedRequirements) {
+                let memberIndex = remainingMembers.indexOf(Number(userId));
+                remainingMembers.splice(memberIndex, 1);
 
-                    remainingTotal -= requirement[1];
+                remainingTotal -= parsedRequirements[userId];
 
-                    return await UserExpense.create({
-                        userId: requirement[0],
-                        expenseId: newTotalExpense.id,
-                        paidStatus: false,
-                        amount: requirement[1],
-                    });
-                }));
-            };
-            let requiredExpenses = await createRequiredExpenses();
+                const createRequiredExpense = await UserExpense.create({
+                    userId: Number(userId),
+                    expenseId: newTotalExpense.id,
+                    paidStatus: false,
+                    amount: parsedRequirements[userId],
+                });
+                requiredExpenses.push(createRequiredExpense);
+            }
 
             const remainingSplit = Math.round(remainingTotal * 100.0 / remainingMembers.length) / 100
 
-            const createRemainingExpenses = async () => {
-                return Promise.all(remainingMembers.forEach(async(member) => {
-                    return await UserExpense.create({
-                        userId: member,
-                        expenseId: newTotalExpense.id,
-                        paidStatus: false,
-                        amount: remainingSplit,
-                    });
-                }));
-            };
-            let remainingExpenses = await createRemainingExpenses();
+            for (let i = 0; i < remainingMembers.length; i++) {
+                let userId = Number(remainingMembers[i]);
+                const createRemainingExpense = await UserExpense.create({
+                    userId,
+                    expenseId: newTotalExpense.id,
+                    paidStatus: false,
+                    amount: remainingSplit,
+                });
+                remainingExpenses.push(createRemainingExpense);
+            }
 
             res.status(201).json({
                 requiredExpenses, remainingExpenses
@@ -101,10 +101,6 @@ router.post('/', asyncHandler (async (req, res, next) => {
             console.log(e);
         }
     }
-
-
-    // create individual userExpenses by each member
-    const amountSplit = totalAmount / members.length;
 
 }))
 
