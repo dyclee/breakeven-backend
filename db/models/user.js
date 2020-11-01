@@ -20,14 +20,26 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   User.associate = function(models) {
     // associations can be defined here
-    User.hasMany(models.Expense, { foreignKey: 'createdBy' });
-    User.hasMany(models.UserExpense, { foreignKey: 'userId' });
+    // User.hasMany(models.Expense, { foreignKey: 'createdBy' });
+    // User.hasMany(models.UserExpense, { foreignKey: 'userId' });
+    const columnMapping = {
+      through: 'UserExpense',
+      otherKey: 'expenseId',
+      foreignKey: 'userId',
+    };
+    User.belongsToMany(models.Expense, columnMapping);
 
     User.belongsToMany(models.User, {
-      as: "friends",
+      as: "friendee",
       through: "Friend",
       otherKey: "friender",
       foreignKey: "friended",
+    });
+    User.belongsToMany(models.User, {
+      as: "friend",
+      through: "Friend",
+      otherKey: "friended",
+      foreignKey: "friender",
     });
   };
   return User;

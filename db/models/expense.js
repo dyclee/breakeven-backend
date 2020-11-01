@@ -27,7 +27,12 @@ module.exports = (sequelize, DataTypes) => {
     Expense.belongsTo(models.Category, { foreignKey: 'categoryId'});
     Expense.belongsTo(models.User, { foreignKey: 'createdBy'})
 
-    Expense.hasMany(models.UserExpense, { foreignKey: 'expenseId'});
+    const columnMapping = {
+      through: 'UserExpense',
+      otherKey: 'expenseId',
+      foreignKey: 'userId',
+    };
+    Expense.belongsToMany(models.User, columnMapping);
   };
   return Expense;
 };

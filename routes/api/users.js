@@ -43,35 +43,38 @@ router.post('/friends', asyncHandler (async (req, res, next) => {
 }))
 
 router.put('/friends', asyncHandler (async (req, res, next) => {
-    const { user } = req.body;
-    const friendedArray = await Friend.findAll({
+    const { userId } = req.body;
+    let friends = [];
+
+    const friendsArray = await Friend.findAll({
         where: {
-            friended: {
-                [Op.eq]: user.id
-            },
+            [Op.or]: [{
+                friended: userId
+            }, {
+                friender: userId
+            }],
             pending: {
                 [Op.eq]: false
             }
         },
-        include: User,
     });
-    console.log("friendedArray: ", friendedArray);
-    const friendedUserObjs = friendedArray.map((friend) => friend.User.id)
-    const frienderArray = await Friend.findAll({
-        where: {
-            friender: user.id,
-            pending: false
-        },
-        include: User,
-    });
-    const frienderUserObjs = frienderArray.map((friend) => friend.user.id);
-
-    const allFriendsObjs = frienderUserObjs.concat(friendedUserObjs)
-
-    console.log(allFriendsObjs);
-    res.status(201).json({
-        allFriendObjs
+    // console.log(friendsArray);
+    const friendsUserObjs = async () => {
+        return Promise.all(friendsArray.map(async(friend) => {
+            if (friend.friender === userId) {
+                return await User.findByPk(friend.friended);
+            }
+            return await User.findByPk(friend.friender);
+        }))
+    };
+    friendsUserObjs()
+    .then(objs => {
+        res.status(201).json({
+            friends: objs
+        })
     })
-}))
+
+
+}));
 
 module.exports = router;
