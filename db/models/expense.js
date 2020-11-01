@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ARRAY(DataTypes.INTEGER),
       allowNull: false,
     },
+    requirements: {
+      type: DataTypes.JSON,
+    },
     categoryId: {
       type: DataTypes.INTEGER,
     },

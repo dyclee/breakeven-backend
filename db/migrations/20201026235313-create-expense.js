@@ -24,6 +24,9 @@ module.exports = {
         type: Sequelize.ARRAY(Sequelize.INTEGER),
         allowNull: false,
       },
+      requirements: {
+        type: Sequelize.JSON,
+      },
       categoryId: {
         type: Sequelize.INTEGER,
         references: { model: 'Categories'},
