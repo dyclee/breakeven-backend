@@ -45,22 +45,20 @@ router.post('/', asyncHandler (async (req, res, next) => {
     } else if (!requirements) {
         const splitEvenly = Math.round(totalAmount * 100.0 / members.length) / 100
 
-        const createUserExpenses = async () => {
-            return Promise.all(members.forEach(async(member) => {
-                return await UserExpense.create({
-                    userId: member,
-                    expenseId: newTotalExpense.id,
-                    paidStatus: false,
-                    amount: splitEvenly
-                })
-            }));
-        };
-        createUserExpenses()
-            .then(userExpenses => {
-                res.status(201).json({
-                    userExpenses
-                })
+        let newExpenses = [];
+        for (let i = 0; i < members.length; i++) {
+            let userId = members[i];
+            const createExpense = await UserExpense.create({
+                userId,
+                expenseId: newTotalExpense.id,
+                paidStatus: false,
+                amount: splitEvenly,
             });
+            newExpenses.push(createExpense);
+
+        }
+        res.status(201).json({newExpenses});
+
     } else {
         const parsedRequirements = JSON.parse(requirements);
 
