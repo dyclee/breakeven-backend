@@ -6,6 +6,14 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert("Users", [
       {
+        fullName: "Demo User",
+        email: 'email@email.com',
+        hashedPassword: "$2a$09$g52NCXX0.CfnliQStgrjTO5NDVH7kfB1wgPpQX.n7ha200frr/J3G",
+        tokenId: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
         fullName: "Rita Smith",
         email: 'rita@email.com',
         hashedPassword: "$2a$16$GNLiEU33rzqdYf04yTsPmOtElYqll7w/7ODmJIPXd8nDCNRw5fhiS",
