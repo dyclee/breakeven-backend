@@ -2,18 +2,21 @@ const express = require('express');
 const {asyncHandler} = require('../../utils');
 const { checkUser } = require('../../config/auth');
 
+const { Op, sequelize } = require("sequelize");
 const { Expense, UserExpense } = require('../../db/models')
 
 const router = express.Router();
 
-router.get('/', asyncHandler ( async (req, res, next) => {
-    const { user } = await checkUser(req);
+router.put('/', asyncHandler ( async (req, res, next) => {
+    const { userId } = req.body;
 
     const allExpenses = await UserExpense.findAll({
         where: {
-            userId: user.id
+            userId: {
+                [Op.eq]: userId
+            }
         },
-        include: [Expense]
+        include: Expense
     });
     console.log(allExpenses);
     res.status(201).json({ allExpenses })

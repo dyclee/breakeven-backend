@@ -36,8 +36,8 @@ module.exports = (sequelize, DataTypes) => {
 
     const columnMapping = {
       through: 'UserExpense',
-      otherKey: 'expenseId',
-      foreignKey: 'userId',
+      otherKey: 'userId',
+      foreignKey: 'expenseId',
     };
     Expense.belongsToMany(models.User, columnMapping);
   };
