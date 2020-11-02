@@ -10,7 +10,7 @@ const router = express.Router();
 router.put('/', asyncHandler ( async (req, res, next) => {
     const { userId } = req.body;
 
-    const allExpenses = await UserExpense.findAll({
+    const owedExpenses = await UserExpense.findAll({
         where: {
             userId: {
                 [Op.eq]: userId
@@ -18,8 +18,16 @@ router.put('/', asyncHandler ( async (req, res, next) => {
         },
         include: Expense
     });
-    console.log(allExpenses);
-    res.status(201).json({ allExpenses })
+
+    const createdExpenses = await Expense.findAll({
+        where: {
+            createdBy: {
+                [Op.eq]: userId
+            }
+        },
+    })
+    // console.log(allExpenses);
+    res.status(201).json({ owedExpenses, createdExpenses })
 }))
 
 router.post('/', asyncHandler (async (req, res, next) => {
