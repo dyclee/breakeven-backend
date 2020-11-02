@@ -77,4 +77,21 @@ router.put('/friends', asyncHandler (async (req, res, next) => {
 
 }));
 
+router.put('/friends/requests', asyncHandler( async (req, res) => {
+    const { userId } = req.body;
+    const friendRequests = await Friend.findAll({
+        where: {
+            friended: {
+                [Op.eq]: userId
+            },
+            pending: {
+                [Op.eq]: true
+            }
+        }
+    });
+
+    res.status(201).json({friendRequests})
+}))
+
+
 module.exports = router;
