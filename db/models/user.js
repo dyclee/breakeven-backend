@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING.BINARY,
       allowNull: false,
     },
+    imageUrl: {
+      type: DataTypes.STRING,
+    },
     tokenId: {
       type: DataTypes.STRING,
     }

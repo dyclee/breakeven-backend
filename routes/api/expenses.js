@@ -3,7 +3,7 @@ const {asyncHandler} = require('../../utils');
 const { checkUser } = require('../../config/auth');
 
 const { Op, sequelize } = require("sequelize");
-const { Expense, UserExpense } = require('../../db/models')
+const { Expense, User, UserExpense } = require('../../db/models')
 
 const router = express.Router();
 
@@ -16,7 +16,11 @@ router.put('/', asyncHandler ( async (req, res, next) => {
                 [Op.eq]: userId
             }
         },
-        include: Expense
+        include: [
+            {model: Expense,
+                include: [User]
+            }
+        ]
     });
 
     const createdExpenses = await Expense.findAll({
@@ -26,7 +30,7 @@ router.put('/', asyncHandler ( async (req, res, next) => {
             }
         },
     })
-    // console.log(allExpenses);
+
     res.status(201).json({ owedExpenses, createdExpenses })
 }))
 

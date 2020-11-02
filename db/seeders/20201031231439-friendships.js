@@ -11,6 +11,27 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        friender: 10,
+        friended: 1,
+        pending: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        friender: 6,
+        friended: 1,
+        pending: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        friender: 1,
+        friended: 2,
+        pending: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
         friender: 1,
         friended: 4,
         pending: false,
