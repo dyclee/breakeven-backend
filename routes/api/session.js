@@ -12,13 +12,14 @@ const { urlencoded } = require('express');
 const router = express.Router();
 
 router.post('/signup', signupValidator, handleValidationErrors, asyncHandler( async (req, res, next) => {
-    const { fullName, email, password } = req.body;
+    const { fullName, email, password, imageUrl } = req.body;
     console.log(email);
     const hashedPassword = await bcrypt.hash(password, 9);
     const user = await User.create({
         fullName,
         email,
         hashedPassword,
+        imageUrl
     });
     const tokenObj = getUserToken(user);
     const { token, jti } = tokenObj;
