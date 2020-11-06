@@ -36,7 +36,7 @@ router.post('/', asyncHandler( async (req, res, next) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ where: { email: email }});
-
+    // console.log(user);
     if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
         const err = new Error("Login failed");
         err.message = "Incorrect email and password"

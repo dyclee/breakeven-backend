@@ -89,8 +89,18 @@ router.put('/friends/requests', asyncHandler( async (req, res) => {
             }
         }
     });
-
-    res.status(201).json({friendRequests})
+    const requestObjs = async () => {
+        return Promise.all(friendRequests.map( async(request) => {
+            return await User.findByPk(request.friender);
+        }))
+    };
+    requestObjs()
+    .then(objs => {
+        res.status(201).json({
+            friendRequests: objs
+        })
+    })
+    // res.status(201).json({friendRequests})
 }))
 
 
