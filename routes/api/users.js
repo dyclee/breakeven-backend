@@ -102,7 +102,29 @@ router.put('/friends/requests', asyncHandler( async (req, res) => {
             friendRequests: objs
         })
     })
-    // res.status(201).json({friendRequests})
+}))
+
+router.delete('/friends/requests', asyncHandler( async (req, res, next) => {
+    const { friender, friended } = req.body;
+    const requestToDelete = await Friend.findOne({
+        where: {
+            friender,
+            friended,
+            pending: {
+                [Op.eq]: true
+            },
+        }
+    })
+    try {
+        await requestToDelete.destroy();
+        res.json("Successfully removed request")
+    } catch (e) {
+        const err = new Error("Could not delete request")
+        err.status = 401;
+        err.title = "Could not delete request";
+        res.json({err})
+    }
+
 }))
 
 
