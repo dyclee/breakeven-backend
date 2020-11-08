@@ -91,7 +91,9 @@ router.put('/friends/requests', asyncHandler( async (req, res) => {
     });
     const requestObjs = async () => {
         return Promise.all(friendRequests.map( async(request) => {
-            return await User.findByPk(request.friender);
+
+            const user = await User.findByPk(request.friender);
+            return {request, user}
         }))
     };
     requestObjs()
