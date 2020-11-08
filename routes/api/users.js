@@ -20,8 +20,8 @@ router.put('/', asyncHandler( async (req, res, next) => {
 }));
 
 router.post('/friends', asyncHandler (async (req, res, next) => {
-    console.log(req.body);
-    const { email, user } = req.body;
+
+    const { email, userId } = req.body;
     const potentialFriend = await User.findOne({
         where: {
             email
@@ -33,13 +33,35 @@ router.post('/friends', asyncHandler (async (req, res, next) => {
         err.title = "User not found";
         return err;
     }
-    const friendRequest = await Friend.create({
-        friender: user.id,
-        friended: potentialFriend.id,
-        pending: true,
+    const checkFriendship = await Friend.findOne({
+        where: {
+            friender: userId,
+            friended: potentialFriend.id
+        }
     });
 
-    res.status(201).json({ friendRequest })
+    const checkOther = await Friend.findOne({
+        where: {
+            friender: potentialFriend.id,
+            friended: userId,
+        }
+    });
+
+    if (!checkFriendship && !checkOther) {
+        const friendRequest = await Friend.create({
+            friender: userId,
+            friended: potentialFriend.id,
+            pending: true,
+        });
+
+        res.status(201).json({ friendRequest });
+        return
+    }
+    const err = new Error("Request has already been made");
+    err.status = 401;
+    err.title = "Request has already been made";
+    res.json(err)
+
 }))
 
 router.put('/friends', asyncHandler (async (req, res, next) => {
