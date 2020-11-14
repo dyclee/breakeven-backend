@@ -115,6 +115,47 @@ router.post('/', asyncHandler (async (req, res, next) => {
         }
     }
 
+}));
+
+router.post('/pay', asyncHandler( async (req, res) => {
+    const { payUser, expenseId, userId } = req.body;
+    const payUserExpense = await UserExpense.findOne({
+        where: {
+            userId,
+            expenseId,
+            paidStatus: {
+                [Op.eq]: false
+            }
+        }
+    });
+    payUserExpense.paidStatus = true;
+
+    await payUserExpense.save();
+
+    const checkRelatedExpenses = await UserExpense.findAll({
+        where: {
+            expenseId
+        }
+    });
+
+    const checkTotalCompletion = checkRelatedExpenses.map((expense) => expense.paidStatus);
+    try {
+        if (checkTotalCompletion.includes(false)) {
+            res.status(201).json("Successfully paid expense");
+            return
+        }
+
+        const completeExpense = await Expense.findByPk(expenseId)
+        completeExpense.paidStatus = true;
+
+        await completeExpense.save();
+        res.status(201).json("Successfully paid expense");
+
+    } catch (e) {
+        const err = new Error("Unable to complete payment")
+        err.status = 401;
+        err.message = "Unable to complete payment"
+    }
 }))
 
 module.exports = router;
