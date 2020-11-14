@@ -147,6 +147,25 @@ router.delete('/friends/requests', asyncHandler( async (req, res, next) => {
         res.json({err})
     }
 
+}));
+
+router.post('/friends/requests', asyncHandler( async (req, res, next) => {
+    const { friender, friended } = req.body;
+    const requestToConfirm = await Friend.findOne({
+        where: {
+            friender,
+            friended,
+            pending: {
+                [Op.eq]: true
+            },
+        }
+    })
+    try {
+
+    } catch (e) {
+
+    }
+
 }))
 
 
