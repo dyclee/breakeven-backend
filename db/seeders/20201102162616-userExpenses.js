@@ -54,7 +54,15 @@ module.exports = {
       {
         userId: 2,
         expenseId: 4,
-        amount: 10.32,
+        amount: 39.51,
+        paidStatus: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        userId: 1,
+        expenseId: 4,
+        amount: 39.51,
         paidStatus: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -86,7 +94,7 @@ module.exports = {
       {
         userId: 2,
         expenseId: 6,
-        amount: 5,
+        amount: 5.00,
         paidStatus: true,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -94,7 +102,7 @@ module.exports = {
       {
         userId: 3,
         expenseId: 6,
-        amount: 5,
+        amount: 5.00,
         paidStatus: true,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -102,7 +110,7 @@ module.exports = {
       {
         userId: 7,
         expenseId: 7,
-        amount: 11,
+        amount: 11.00,
         paidStatus: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -110,7 +118,15 @@ module.exports = {
       {
         userId: 8,
         expenseId: 7,
-        amount: 11,
+        amount: 11.00,
+        paidStatus: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        userId: 1,
+        expenseId: 8,
+        amount: 4.69,
         paidStatus: false,
         createdAt: new Date(),
         updatedAt: new Date(),

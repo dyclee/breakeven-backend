@@ -73,6 +73,41 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        friender: 11,
+        friended: 1,
+        pending: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        friender: 12,
+        friended: 1,
+        pending: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        friender: 13,
+        friended: 1,
+        pending: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        friender: 14,
+        friended: 1,
+        pending: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        friender: 15,
+        friended: 1,
+        pending: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
     /*
     Add altering commands here.

@@ -1,5 +1,5 @@
 const express = require('express');
-const {asyncHandler} = require('../../utils');
+const {asyncHandler, formatDate } = require('../../utils');
 const { checkUser } = require('../../config/auth');
 
 const { Op, sequelize } = require("sequelize");
@@ -29,7 +29,7 @@ router.put('/', asyncHandler ( async (req, res, next) => {
                 [Op.eq]: userId
             }
         },
-    })
+    });
 
     res.status(201).json({ owedExpenses, createdExpenses })
 }))
