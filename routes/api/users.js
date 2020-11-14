@@ -1,6 +1,6 @@
 const { loginValidator, handleValidationErrors } = require('../../validations');
 const { asyncHandler } = require('../../utils');
-const { User, Friend } = require('../../db/models')
+const { User, Friend, sequelize } = require('../../db/models')
 const { checkUser } = require('../../config/auth');
 const { Op } = require('sequelize');
 
@@ -151,19 +151,27 @@ router.delete('/friends/requests', asyncHandler( async (req, res, next) => {
 
 router.post('/friends/requests', asyncHandler( async (req, res, next) => {
     const { friender, friended } = req.body;
-    const requestToConfirm = await Friend.findOne({
-        where: {
-            friender,
-            friended,
-            pending: {
-                [Op.eq]: true
-            },
-        }
-    })
     try {
+        const requestToConfirm = await Friend.findOne({
+            where: {
+                friender,
+                friended,
+                pending: {
+                    [Op.eq]: true
+                },
+            }
+        })
 
+        requestToConfirm.pending = false;
+
+        await requestToConfirm.save();
+
+        res.json("Successfully confirmed friend request")
     } catch (e) {
-
+        const err = new Error("could not delete request")
+        err.status = 401;
+        err.title = "Could not confirm request"
+        res.json({err})
     }
 
 }))
