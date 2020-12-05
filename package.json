@@ -1,9 +1,7 @@
 {
   "name": "backend-express",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
   "scripts": {
-    "test": "echo \"error: no test specified\" && exit 1",
     "start": "per-env",
     "start:development": "nodemon -r dotenv/config ./bin/www",
     "start:production": "node ./bin/www"
@@ -29,5 +27,17 @@
   "devDependencies": {
     "dotenv-cli": "^4.0.0",
     "nodemon": "^2.0.6"
-  }
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dyclee/splitwise-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dyclee/splitwise-backend/issues"
+  },
+  "homepage": "https://github.com/dyclee/splitwise-backend#readme",
+  "description": "\"\""
 }
