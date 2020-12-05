@@ -3,8 +3,8 @@
 const { loginValidator } = require("../../validations");
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert("Users", [
+  up: async (queryInterface, Sequelize) => {
+    return await queryInterface.bulkInsert("Users", [
       {
         fullName: "Demo User",
         email: 'email@email.com',
@@ -153,7 +153,8 @@ module.exports = {
     */
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkDelete('Users', null, {})
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.

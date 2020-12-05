@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert("UserExpenses", [
+  up: async (queryInterface, Sequelize) => {
+    return await queryInterface.bulkInsert("UserExpenses", [
       {
         userId: 1,
         expenseId: 1,
@@ -144,7 +144,8 @@ module.exports = {
     */
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkDelete('UserExpenses', null, {})
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.
