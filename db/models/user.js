@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING.BINARY,
       allowNull: false,
     },
+    balance: {
+      type: DataTypes.FLOAT(8,2),
+      allowNull: false,
+      defaultValue: 0,
+    },
     imageUrl: {
       type: DataTypes.STRING,
     },

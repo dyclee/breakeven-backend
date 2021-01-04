@@ -73,7 +73,7 @@ router.post('/', asyncHandler (async (req, res, next) => {
 
     } else {
         const parsedRequirements = JSON.parse(requirements);
-
+        // console.log("REQUIREMENTS PARSED", parsedRequirements)
         let remainingMembers = members;
         let remainingTotal = totalAmount;
         let requiredExpenses = [];

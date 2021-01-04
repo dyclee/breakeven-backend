@@ -14,7 +14,7 @@ const expensesApiRouter = require('./routes/api/expenses');
 
 const app = express();
 
-
+// require('dotenv').config()
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cors());

@@ -1,6 +1,7 @@
 const config = require("./index");
 
 const db = config.db;
+console.log("DB", db);
 
 const username = db.username;
 const password = db.password;

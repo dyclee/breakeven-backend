@@ -17,6 +17,11 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
+      balance: {
+        type: Sequelize.FLOAT(8,2),
+        allowNull: false,
+        defaultValue: 0,
+      },
       hashedPassword: {
         type: Sequelize.STRING.BINARY,
         allowNull: false,
