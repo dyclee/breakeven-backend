@@ -132,6 +132,10 @@ router.post('/pay', asyncHandler( async (req, res) => {
 
     await payUserExpense.save();
 
+    const paidUser = await User.findByPk(payUser);
+    paidUser.balance += payUserExpense.amount;
+    await paidUser.save();
+
     const checkRelatedExpenses = await UserExpense.findAll({
         where: {
             expenseId
