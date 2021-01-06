@@ -136,6 +136,10 @@ router.post('/pay', asyncHandler( async (req, res) => {
     paidUser.balance += payUserExpense.amount;
     await paidUser.save();
 
+    const payer = await User.findByPk(userId);
+    payer.balance -= payUserExpense.amount;
+    await payer.save();
+
     const checkRelatedExpenses = await UserExpense.findAll({
         where: {
             expenseId
@@ -145,7 +149,7 @@ router.post('/pay', asyncHandler( async (req, res) => {
     const checkTotalCompletion = checkRelatedExpenses.map((expense) => expense.paidStatus);
     try {
         if (checkTotalCompletion.includes(false)) {
-            res.status(201).json("Successfully paid expense");
+            res.status(201).json({payer});
             return
         }
 
@@ -153,7 +157,7 @@ router.post('/pay', asyncHandler( async (req, res) => {
         completeExpense.paidStatus = true;
 
         await completeExpense.save();
-        res.status(201).json("Successfully paid expense");
+        res.status(201).json({payer});
 
     } catch (e) {
         const err = new Error("Unable to complete payment")
