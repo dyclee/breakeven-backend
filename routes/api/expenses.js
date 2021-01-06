@@ -156,6 +156,47 @@ router.post('/remind', asyncHandler( async (req, res) => {
         err.message = "Unable to complete reminder"
         res.json({err})
     }
+}));
+
+router.post('/deleteRemind', asyncHandler( async (req, res) => {
+    const { userId, expenseId } = req.body;
+    try {
+        const removeReminder = await UserExpense.findOne({
+            where: {
+                userId,
+                expenseId
+            }
+        });
+        removeReminder.reminder = false;
+        await removeReminder.save();
+        res.status(201).json({removeReminder})
+    } catch (e) {
+        const err = new Error("Unable to delete reminder")
+        err.status = 401;
+        err.message = "Unable to delete reminder"
+        res.json({err})
+    }
+}))
+
+router.post('/notifications', asyncHandler( async (req, res) => {
+    const { userId } = req.body;
+    const notifications = await UserExpense.findAll({
+        where: {
+            userId,
+            paidStatus: {
+                [Op.eq]: false
+            },
+            reminder: {
+                [Op.eq]: true
+            }
+        },
+        include: [
+            {model: Expense,
+                include: [User]
+            },
+        ]
+    });
+    res.status(201).json({notifications});
 }))
 
 router.post('/pay', asyncHandler( async (req, res) => {
