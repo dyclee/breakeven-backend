@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false,
     },
+    reminder: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    }
   }, {});
   UserExpense.associate = function(models) {
     // associations can be defined here

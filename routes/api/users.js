@@ -66,6 +66,7 @@ router.post('/friends', asyncHandler (async (req, res, next) => {
 
 router.put('/friends', asyncHandler (async (req, res, next) => {
     const { userId } = req.body;
+    // console.log("USERID", userId)
     let friends = [];
 
     const friendsArray = await Friend.findAll({
@@ -80,17 +81,21 @@ router.put('/friends', asyncHandler (async (req, res, next) => {
             }
         },
     });
-    // console.log(friendsArray);
+    // console.log("FRIENDS ARRAY", friendsArray);
     const friendsUserObjs = async () => {
         return Promise.all(friendsArray.map(async(friend) => {
-            if (friend.friender === userId) {
+            if (friend.friender === Number(userId)) {
+                // console.log("HITTING THIS FRIENDED", friend.friended);
                 return await User.findByPk(friend.friended);
+            } else {
+                // console.log("FRIENDER", friend.friender);
+                return await User.findByPk(friend.friender);
             }
-            return await User.findByPk(friend.friender);
         }))
     };
     friendsUserObjs()
     .then(objs => {
+        console.log("OBJS", objs, typeof(userId))
         res.status(201).json({
             friends: objs
         })

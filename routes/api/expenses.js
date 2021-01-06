@@ -30,8 +30,28 @@ router.put('/', asyncHandler ( async (req, res, next) => {
             }
         },
     });
+    const createdUserExpenses = []
+    for (let i = 0; i < createdExpenses.length; i++) {
+        let expense = createdExpenses[i];
+        let userExpenses = await UserExpense.findAll({
+            where: {
+                expenseId: {
+                    [Op.eq]: expense.id
+                }
+            },
+            include: [
+                {model: Expense,
+                    include: [User]
+                },
+                {model: User}
+            ]
+        });
+        // console.log("USER EXPENSES", userExpenses)
+        Array.prototype.push.apply(createdUserExpenses, userExpenses)
+    }
 
-    res.status(201).json({ owedExpenses, createdExpenses })
+    // console.log("CREATED USER EXPENSES", createdUserExpenses)
+    res.status(201).json({ owedExpenses, createdExpenses, createdUserExpenses })
 }))
 
 router.post('/', asyncHandler (async (req, res, next) => {
@@ -117,6 +137,27 @@ router.post('/', asyncHandler (async (req, res, next) => {
 
 }));
 
+router.post('/remind', asyncHandler( async (req, res) => {
+    const { userId, expenseId } = req.body;
+    try {
+        const remindExpense = await UserExpense.findOne({
+            where: {
+                userId,
+                expenseId
+            }
+        });
+        remindExpense.reminder = true;
+        await remindExpense.save();
+
+        res.status(201).json({remindExpense})
+    } catch (e) {
+        const err = new Error("Unable to complete reminder")
+        err.status = 401;
+        err.message = "Unable to complete reminder"
+        res.json({err})
+    }
+}))
+
 router.post('/pay', asyncHandler( async (req, res) => {
     const { payUser, expenseId, userId } = req.body;
     const payUserExpense = await UserExpense.findOne({
@@ -163,6 +204,7 @@ router.post('/pay', asyncHandler( async (req, res) => {
         const err = new Error("Unable to complete payment")
         err.status = 401;
         err.message = "Unable to complete payment"
+        res.json({err})
     }
 }))
 
