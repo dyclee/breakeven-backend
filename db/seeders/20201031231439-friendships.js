@@ -83,7 +83,7 @@ module.exports = {
       {
         friender: 12,
         friended: 1,
-        pending: true,
+        pending: false,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -97,7 +97,7 @@ module.exports = {
       {
         friender: 14,
         friended: 1,
-        pending: true,
+        pending: false,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
