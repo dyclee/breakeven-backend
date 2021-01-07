@@ -210,6 +210,16 @@ router.post('/pay', asyncHandler( async (req, res) => {
             }
         }
     });
+
+    const user = await User.findByPk(userId);
+    // console.log("USER", user);
+
+    if (payUserExpense.amount > user.balance) {
+        // console.log("HITTING THIS?")
+        let message = "Not enough funds in balance"
+        res.status(401).json({message})
+        return;
+    }
     payUserExpense.paidStatus = true;
 
     await payUserExpense.save();
