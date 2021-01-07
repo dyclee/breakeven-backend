@@ -19,6 +19,15 @@ router.put('/', asyncHandler( async (req, res, next) => {
     })
 }));
 
+router.post('/cashout', asyncHandler( async (req, res, next) => {
+    const { userId } = req.body;
+    const user = await User.findByPk(userId);
+    user.balance = 0.00;
+    user.save();
+
+    res.status(200).json({user})
+}))
+
 router.post('/friends', asyncHandler (async (req, res, next) => {
 
     const { email, userId } = req.body;
